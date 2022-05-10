@@ -1,6 +1,6 @@
 class Restaurant {
   final String name;
-  final int rate;
+  final double rate;
 
   Restaurant(this.name, this.rate);
 }

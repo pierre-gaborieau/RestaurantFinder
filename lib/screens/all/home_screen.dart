@@ -1,7 +1,7 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurantfinder/data/data_constant.dart';
+import 'package:flutter_restaurantfinder/data/fake_data.dart';
 import 'package:flutter_restaurantfinder/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -44,44 +44,17 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             children: [
               RestaurantAleatoire(size: size),
-              Column(
-                children: [
-                  TitleRow(
-                    text: "Tous les Restaurants",
-                    icon: Icon(Icons.arrow_forward_ios_rounded),
-                    onTap: () {
-                      log("View All");
-                    },
-                  ),
-                  SizedBox(
-                    height: size.height / 4,
-                    width: size.width,
-                    child: ListView(
-                      scrollDirection: Axis.vertical,
-                      children: [
-                        SmallCard(size: size),
-                        SmallCard(size: size),
-                        SmallCard(size: size),
-                        SmallCard(size: size),
-                        SmallCard(size: size),
-                        SmallCard(size: size),
-                        SmallCard(size: size),
-                        SmallCard(size: size),
-                      ],
-                    ),
-                  )
-                ],
+              ListRestaurantHorizontal(
+                size: size,
+                title: "Tous les Restaurants",
+                actionButton: () {},
+                listRestaurant: FakeData.listRestaurant,
               ),
-              Column(
-                children: [
-                  TitleRow(
-                    text: "Les mieux notés",
-                    icon: Icon(Icons.arrow_forward_ios_rounded),
-                    onTap: () {
-                      log("Order by rate");
-                    },
-                  )
-                ],
+              ListRestaurantHorizontal(
+                size: size,
+                title: "Restaurants les mieux notés",
+                actionButton: () {},
+                listRestaurant: FakeData.orderByRate(),
               )
             ],
           ),
