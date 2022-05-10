@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_restaurantfinder/data/data_constant.dart';
 import 'package:flutter_restaurantfinder/widgets/widgets.dart';
 
 class TitleRow extends StatelessWidget {

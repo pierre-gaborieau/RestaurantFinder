@@ -44,12 +44,44 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             children: [
               RestaurantAleatoire(size: size),
-              TitleRow(
-                text: "Tous les Restaurants",
-                icon: Icon(Icons.arrow_forward_ios_rounded),
-                onTap: () {
-                  log("View All");
-                },
+              Column(
+                children: [
+                  TitleRow(
+                    text: "Tous les Restaurants",
+                    icon: Icon(Icons.arrow_forward_ios_rounded),
+                    onTap: () {
+                      log("View All");
+                    },
+                  ),
+                  SizedBox(
+                    height: size.height / 4,
+                    width: size.width,
+                    child: ListView(
+                      scrollDirection: Axis.vertical,
+                      children: [
+                        SmallCard(size: size),
+                        SmallCard(size: size),
+                        SmallCard(size: size),
+                        SmallCard(size: size),
+                        SmallCard(size: size),
+                        SmallCard(size: size),
+                        SmallCard(size: size),
+                        SmallCard(size: size),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              Column(
+                children: [
+                  TitleRow(
+                    text: "Les mieux notés",
+                    icon: Icon(Icons.arrow_forward_ios_rounded),
+                    onTap: () {
+                      log("Order by rate");
+                    },
+                  )
+                ],
               )
             ],
           ),
