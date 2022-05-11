@@ -1,65 +1,93 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:flutter_restaurantfinder/data/data_constant.dart';
-import 'package:flutter_restaurantfinder/data/fake_data.dart';
+import 'package:flutter_restaurantfinder/screens/all/search_content.dart';
+
+import 'package:flutter_restaurantfinder/screens/screens.dart';
 import 'package:flutter_restaurantfinder/widgets/widgets.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  Widget content;
+  BottomNavBar bottomNavBar;
+  BottomNavBar bottomNavBarHome;
+  BottomNavBar bottomNavBarSettings;
+  BottomNavBar bottomNavBarSearch;
+  @override
+  void initState() {
+    super.initState();
+
+    content = MainContent(
+      update: _valueChanged,
+    );
+    bottomNavBarHome = BottomNavBar(
+        actionLeft: () {
+          _navigateToSettings(context);
+        },
+        iconActionLeft: Icon(Icons.settings_outlined),
+        actionRight: () {
+          _navigateToSearch(context, false);
+        },
+        iconActionRight: Icon(Icons.search_rounded));
+    bottomNavBarSettings = BottomNavBar(
+        actionLeft: () {
+          _navigateToHome(context);
+        },
+        iconActionLeft: Icon(Icons.home_outlined),
+        actionRight: () {
+          _navigateToSearch(context, false);
+        },
+        iconActionRight: Icon(Icons.search_rounded));
+    bottomNavBarSearch = BottomNavBar(
+        actionLeft: () {
+          _navigateToSettings(context);
+        },
+        iconActionLeft: Icon(Icons.settings_outlined),
+        actionRight: () {
+          _navigateToHome(context);
+        },
+        iconActionRight: Icon(Icons.home_outlined));
+    bottomNavBar = bottomNavBarHome;
+  }
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SquareIcon(
-              icon: Icon(Icons.settings_outlined),
-              onTap: () {
-                log("Settings Page");
-              },
-            ),
-            Text(
-              kAppName,
-              style: TextStyle(
-                  fontFamily: "Montserrat",
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            ),
-            SquareIcon(
-              icon: Icon(Icons.search_outlined),
-              onTap: () {
-                log("Search Page");
-              },
-            )
-          ],
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(kDefaultPadding),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              RestaurantAleatoire(size: size),
-              ListRestaurantHorizontal(
-                size: size,
-                title: "Tous les Restaurants",
-                actionButton: () {},
-                listRestaurant: FakeData.listRestaurant,
-              ),
-              ListRestaurantHorizontal(
-                size: size,
-                title: "Restaurants les mieux notés",
-                actionButton: () {},
-                listRestaurant: FakeData.orderByRate(),
-              )
-            ],
-          ),
-        ),
-      ),
+      bottomNavigationBar: bottomNavBar,
+      body: content,
     );
+  }
+
+  void _navigateToSettings(BuildContext context) async {
+    setState(() {
+      content = SettingsContent();
+      bottomNavBar = bottomNavBarSettings;
+    });
+  }
+
+  void _navigateToHome(BuildContext context) async {
+    setState(() {
+      content = MainContent(
+        update: _valueChanged,
+      );
+      bottomNavBar = bottomNavBarHome;
+    });
+  }
+
+  void _navigateToSearch(BuildContext context, bool isRate) async {
+    setState(() {
+      content = SearchContent(isRate: isRate);
+      bottomNavBar = bottomNavBarSearch;
+    });
+  }
+
+  _valueChanged(bool value) {
+    _navigateToSearch(context, value);
   }
 }

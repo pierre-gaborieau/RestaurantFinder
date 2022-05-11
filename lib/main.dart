@@ -1,6 +1,5 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_restaurantfinder/model/darktheme/dark_theme_provider.dart';
-import 'package:flutter_restaurantfinder/model/darktheme/styles.dart';
 import 'package:flutter_restaurantfinder/screens/all/home_screen.dart';
 
 void main() {
@@ -13,26 +12,33 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  DarkThemeProvider themeProvider = new DarkThemeProvider();
-
   @override
   void initState() {
     super.initState();
-    getCurrentAppTheme();
-  }
-
-  void getCurrentAppTheme() async {
-    themeProvider.darkTheme =
-        await themeProvider.darkThemePreference.getTheme();
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Restaurant Finder',
-      theme: Styles.themeData(themeProvider.darkTheme, context),
-      home: HomeScreen(),
+    return AdaptiveTheme(
+      light: ThemeData(
+        brightness: Brightness.light,
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.red)
+            .copyWith(secondary: Color(0xFFC2185B)),
+      ),
+      dark: ThemeData(
+        brightness: Brightness.dark,
+        primarySwatch: Colors.red,
+      ),
+      initial: AdaptiveThemeMode.light,
+      builder: (light, dark) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: light,
+          darkTheme: dark,
+          title: 'Restaurant Finder',
+          home: HomeScreen(),
+        );
+      },
     );
   }
 }
