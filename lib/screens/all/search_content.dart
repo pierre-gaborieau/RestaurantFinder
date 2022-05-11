@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_restaurantfinder/data/data_constant.dart';
 import 'package:flutter_restaurantfinder/data/fake_data.dart';
 import 'package:flutter_restaurantfinder/model/all/restaurant.dart';
+import 'package:flutter_restaurantfinder/widgets/all/rate_generator.dart';
 
 class SearchContent extends StatefulWidget {
   final bool isRate;
@@ -33,10 +34,10 @@ class _SearchContentState extends State<SearchContent> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Padding(
       padding: EdgeInsets.all(kDefaultPadding),
-      child: SingleChildScrollView(
-          child: Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
@@ -76,16 +77,62 @@ class _SearchContentState extends State<SearchContent> {
             ),
           ),
           SizedBox(
-            height: double.maxFinite,
+            height: size.height / 4 * 2.9,
             child: ListView.builder(
               itemCount: resultList.length,
               itemBuilder: ((context, index) {
-                return Text(resultList[index].name);
+                return Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Container(
+                    height: size.height / 6,
+                    width: size.width,
+                    child: Stack(children: [
+                      Container(
+                        height: double.maxFinite,
+                        width: double.maxFinite,
+                        decoration: BoxDecoration(
+                            color: Colors.pink,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(15))),
+                      ),
+                      Container(
+                        alignment: Alignment.bottomLeft,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                          gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.black.withAlpha(0),
+                                Colors.black12,
+                                Colors.black45
+                              ]),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.00),
+                          child: Container(
+                              height: 40,
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      resultList[index].name,
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    RateGenerator(
+                                        restaurant: resultList[index],
+                                        small: false)
+                                  ])),
+                        ),
+                      )
+                    ]),
+                  ),
+                );
               }),
             ),
           )
         ],
-      )),
+      ),
     );
   }
 }
